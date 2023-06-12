@@ -1,11 +1,18 @@
 interface Props {
   name: string;
+  deleteItem: (name: string) => void;
 }
 
-const ListItem = ({ name }: Props) => {
+const ListItem = ({ name, deleteItem }: Props) => {
   return (
     <li className="list-inside py-4 px-2 border-b border-b-gray-100 hover:bg-gray-50">
       {name}
+      <button
+        onClick={() => deleteItem(name)}
+        className="text-red-600 p-2 border border-gray-100"
+      >
+        x
+      </button>
     </li>
   );
 };
