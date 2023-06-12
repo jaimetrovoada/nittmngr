@@ -1,13 +1,10 @@
-export const nitterInstances = ["nitter.net", "nitter.privacydev.net"];
-
-function getRandomNitterInstance() {
-  return nitterInstances[Math.floor(Math.random() * nitterInstances.length)];
-}
+export const nitterInstances = ["farside.link/nitter", "nitter.privacydev.net"];
 
 export function createNitterLink(
   usernames: string[],
-  customInstance?: string
+  instanceType?: string
 ): string {
-  const instance = customInstance || getRandomNitterInstance();
+  const instance =
+    instanceType === "random" ? nitterInstances[0] : nitterInstances[1];
   return `https://${instance}/${usernames.join(",")}`;
 }
