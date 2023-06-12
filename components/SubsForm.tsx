@@ -15,14 +15,13 @@ const SubsForm = ({ setList, list }: Props) => {
     e.preventDefault();
     setInput("");
 
-    const res = await fetch("/api/subs/", {
+    const res = await fetch(`/api/feeds/${params.feed}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        listName: params.sub,
-        listItems: [...list, input],
+        subs: [...list, input],
       }),
     });
     if (res.ok) {
