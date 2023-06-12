@@ -33,8 +33,6 @@ const FeedsList = ({ feeds }: Props) => {
               </a>
               <a
                 href={`/feeds/${item}`}
-                target="_blank"
-                rel="noreferrer"
                 className="capitalize font-semibold border-blue-600 text-gray-800 border p-2 rounded-xl w-fit aria-disabled:bg-gray-400 aria-disabled:cursor-not-allowed"
               >
                 edit
