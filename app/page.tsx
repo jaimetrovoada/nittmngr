@@ -5,8 +5,7 @@ import Container from "@/components/Container";
 
 export default function Home() {
   const feeds = cookies().get("feeds");
-  const feedsArr = feeds?.value?.split(",") || [];
-
+  const feedsArr = JSON.parse(feeds?.value || "[]");
   console.log({ feedsArr });
   return (
     <Container>
