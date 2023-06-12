@@ -6,9 +6,10 @@ import SubsForm from "./SubsForm";
 
 interface Props {
   subs: string[];
+  feedName: string;
 }
 
-const SubList = ({ subs }: Props) => {
+const SubList = ({ subs, feedName }: Props) => {
   const [list, setList] = useState<string[]>(subs);
   const [url, setUrl] = useState("");
 
@@ -17,13 +18,28 @@ const SubList = ({ subs }: Props) => {
     setUrl(url);
   }, [list]);
 
+  const deleteItem = async (name: string) => {
+    const res = await fetch(`/api/feeds/${feedName}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subs: list.filter((item) => item !== name),
+      }),
+    });
+    if (res.ok) {
+      setList((prev) => prev.filter((item) => item !== name));
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div>
         <p className="text-xl font-semibold">SubList</p>
         <ul className="list-disc">
           {list.map((item, index) => (
-            <ListItem key={index} name={item} />
+            <ListItem key={index} name={item} deleteItem={deleteItem} />
           ))}
         </ul>
       </div>
