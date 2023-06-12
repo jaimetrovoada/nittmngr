@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
+import { getClasses } from "@/lib/utils";
 
 interface Props {
   list: string[];
@@ -35,12 +36,10 @@ const SubsForm = ({ setList, list }: Props) => {
     return regex.test(input);
   };
 
+  const isValid = validateInput(input);
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isValid = validateInput(e.target.value);
-    console.log({ isValid });
-    if (isValid) {
-      setInput(e.target.value);
-    }
+    setInput(e.target.value);
   };
 
   return (
@@ -49,14 +48,20 @@ const SubsForm = ({ setList, list }: Props) => {
         type="text"
         onChange={handleInput}
         value={input}
-        className="p-2 border border-gray-400"
+        className={getClasses(
+          "p-2 border border-gray-400 focus-visible:outline-none",
+          {
+            "border-red-600": input && !isValid,
+          }
+        )}
         pattern="^@?(\w){1,15}$"
-        placeholder="Write a username"
+        placeholder="username"
       />
+      {input && !isValid && <p className="text-red-600">invalid username</p>}
       <button
         type="submit"
-        className="capitalize font-semibold bg-blue-400 text-white border shadow-md p-2 rounded-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={!input}
+        className="capitalize text-sm bg-blue-400 text-white border shadow-md p-2 rounded-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+        disabled={!isValid}
       >
         add
       </button>
