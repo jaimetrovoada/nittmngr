@@ -4,16 +4,16 @@ import Container from "@/components/Container";
 
 interface Props {
   params: {
-    sub: string;
+    feed: string;
   };
 }
 
 const Page = ({ params }: Props) => {
-  const list = cookies().get(params.sub);
+  const list = cookies().get(params.feed);
   const listArr = list?.value?.split(",") || [];
   return (
     <Container className="flex flex-col gap-4">
-      <SubList subs={listArr} />
+      <SubList subs={listArr} feedName={params.feed} />
     </Container>
   );
 };
