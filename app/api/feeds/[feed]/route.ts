@@ -4,6 +4,13 @@ interface Params {
   feed: string;
 }
 
+export async function GET(request: Request, context: { params: Params }) {
+  const subs = cookies().get(context.params.feed);
+  const subsArr = JSON.parse(subs?.value || "[]");
+
+  return new Response(JSON.stringify(subsArr));
+}
+
 export async function POST(request: Request, context: { params: Params }) {
   const body = await request.json();
   console.log({ body });
