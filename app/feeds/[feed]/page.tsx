@@ -10,7 +10,7 @@ interface Props {
 
 const Page = ({ params }: Props) => {
   const list = cookies().get(params.feed);
-  const listArr = list?.value?.split(",") || [];
+  const listArr = JSON.parse(list?.value || "[]");
   return (
     <Container className="flex flex-col gap-4">
       <SubList subs={listArr} feedName={params.feed} />
