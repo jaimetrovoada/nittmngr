@@ -4,6 +4,6 @@ export async function POST(request: Request) {
   const body = await request.json();
   console.log({ body });
 
-  cookies().set("feeds", body.list.join(","));
+  cookies().set("feeds", JSON.stringify(body.list));
   return new Response("ok");
 }
