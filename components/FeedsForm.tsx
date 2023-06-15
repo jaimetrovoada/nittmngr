@@ -1,16 +1,20 @@
 "use client";
+import { Feeds } from "@/@types";
 import React, { useState } from "react";
 
 interface Props {
-  list: string[];
+  feeds: Feeds;
 }
 
-const FeedsForm = ({ list }: Props) => {
+const FeedsForm = ({ feeds }: Props) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setInput("");
+    const feed = {
+      name: input,
+      subs: [],
+    };
 
     const res = await fetch("/api/feeds/", {
       method: "POST",
@@ -18,10 +22,14 @@ const FeedsForm = ({ list }: Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        list: [...list, input],
+        feeds: [...feeds, feed],
       }),
     });
+
     console.log({ res });
+    if (res.ok) {
+      setInput("");
+    }
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,17 +39,17 @@ const FeedsForm = ({ list }: Props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 max-w-md border border-gray-200 shadow-md p-4"
+      className="flex max-w-md flex-col gap-2 border border-gray-200 p-4 shadow-md"
     >
       <input
         type="text"
         onChange={handleInput}
         value={input}
-        className="p-2 border border-gray-400"
+        className="border border-gray-400 p-2"
       />
       <button
         type="submit"
-        className="capitalize font-semibold bg-blue-400 text-white border shadow-md p-2 rounded-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="rounded-xl border bg-blue-400 p-2 font-semibold capitalize text-white shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
         disabled={!input}
       >
         create feed

@@ -47,20 +47,20 @@ const SubList = ({ subs, feedName }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 max-w-lg w-full mx-auto">
-      <div>
-        <p className="text-xl font-semibold">SubList</p>
-        <ul className="list-disc">
-          {list.map((item, index) => (
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p className="text-lg capitalize">add user</p>
+        <SubsForm list={list} setList={setList} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="text-lg">Users in this Feed</p>
+        <ul>
+          {list?.map((item, index) => (
             <ListItem key={index} name={item} deleteItem={deleteItem} />
           ))}
         </ul>
       </div>
-      <div>
-        <p>add new sub</p>
-        <SubsForm list={list} setList={setList} />
-      </div>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row items-center justify-between">
         <a
           href={list.length > 0 ? url : ""}
           aria-disabled={list.length === 0}
@@ -71,13 +71,13 @@ const SubList = ({ subs, feedName }: Props) => {
           }}
           target="_blank"
           rel="noreferrer"
-          className="capitalize font-semibold bg-blue-400 text-white border shadow-md p-2 rounded-xl w-fit aria-disabled:bg-gray-400 aria-disabled:cursor-not-allowed"
+          className="w-fit rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
         >
           visit
         </a>
         <button
           onClick={deleteFeed}
-          className="border border-red-400 p-2 rounded-xl"
+          className="rounded-xl border border-red-400 p-2 text-sm capitalize"
         >
           delete feed
         </button>

@@ -1,20 +1,15 @@
+import { Feeds } from "@/@types";
 import FeedItem from "./FeedItem";
 
 interface Props {
-  feeds: string[];
+  feeds: Feeds;
 }
 
 const FeedsList = ({ feeds }: Props) => {
-
   return (
-    <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:w-full">
-      {feeds.map((item, index) => {
-        return (
-          <FeedItem
-            key={index}
-            feedName={item}
-          />
-        );
+    <div className=" grid grid-cols-1 gap-4 md:w-full md:grid-cols-2 lg:grid-cols-3">
+      {feeds.map((feed, index) => {
+        return <FeedItem key={index} feedName={feed.name} />;
       })}
     </div>
   );

@@ -2,10 +2,7 @@ import Link from "next/link";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Providers from "./providers";
-import Select, {
-  SelectedOptionDisplay,
-  Option,
-} from "@/components/Select/Select";
+import Select, { Option } from "@/components/Select/Select";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +21,8 @@ export default function RootLayout({
     { value: "nsfw", label: "nsfw" },
   ];
   return (
-    <html lang="en" className="h-full">
-      <body className={inter.className + " flex flex-col h-full"}>
+    <html lang="en">
+      <body className={inter.className + " flex flex-col"}>
         <Providers>
           <header>
             <nav className="p-4 flex flex-row justify-between items-center">
