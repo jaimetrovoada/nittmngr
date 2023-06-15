@@ -11,22 +11,41 @@ interface Props {
 const SubsForm = ({ setList, list }: Props) => {
   const params = useParams();
   const [input, setInput] = useState("");
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInput("");
 
-    const res = await fetch(`/api/feeds/${params.feed}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subs: [...list, input],
-      }),
-    });
-    if (res.ok) {
-      setList((prev) => [...prev, input]);
+    let subs: string[] = [];
+    if (input.includes(",")) {
+      const trim = input.trim();
+      subs = trim.split(",").map((item) => item.trim());
+    } else {
+      subs = [input];
+    }
+
+    for (let i = 0; i < subs.length; i++) {
+      if (!validateInput(subs[i])) {
+        setIsValid(false);
+        return;
+      }
+    }
+
+    console.log({ subs, isValid });
+    if (isValid) {
+      const res = await fetch(`/api/feeds/${params.feed}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subs: [...list, ...subs],
+        }),
+      });
+      if (res.ok) {
+        setList((prev) => [...prev, ...subs]);
+      }
     }
   };
 
@@ -35,8 +54,6 @@ const SubsForm = ({ setList, list }: Props) => {
 
     return regex.test(input);
   };
-
-  const isValid = validateInput(input);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -49,19 +66,20 @@ const SubsForm = ({ setList, list }: Props) => {
         onChange={handleInput}
         value={input}
         className={getClasses(
-          "p-2 border border-gray-400 focus-visible:outline-none",
+          "border border-gray-400 p-2 focus-visible:outline-none",
           {
-            "border-red-600": input && !isValid,
+            "border-red-600": input && isValid === false,
           }
         )}
-        pattern="^@?(\w){1,15}$"
         placeholder="username"
       />
-      {input && !isValid && <p className="text-red-600">invalid username</p>}
+      {input && isValid === false && (
+        <p className="text-red-600">invalid username</p>
+      )}
       <button
         type="submit"
-        className="capitalize text-sm bg-blue-400 text-white border shadow-md p-2 rounded-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={!isValid}
+        className="rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
+        disabled={!input}
       >
         add
       </button>
