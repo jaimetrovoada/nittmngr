@@ -1,34 +1,30 @@
 "use client";
 import { createNitterLink } from "@/lib";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { SelectContext } from "./Select/SelectProvider";
-import { Feed } from "@/@types";
+import { UserFeedsResponse } from "@/@types";
+import Link from "next/link";
 
 interface Props {
-  feedName: string;
+  feed: UserFeedsResponse;
+  user: string;
 }
 
-const FeedItem = ({ feedName }: Props) => {
+const FeedItem = ({ feed, user }: Props) => {
   const { selectedOption } = useContext(SelectContext);
-  const [subs, setSubs] = useState<Feed>();
-  useEffect(() => {
-    fetch(`/api/feeds/${feedName}`)
-      .then((res) => res.json())
-      .then(setSubs);
-  }, [feedName]);
-  console.log({ subs });
-  const url = createNitterLink(subs?.subs || [], selectedOption);
+  const url = createNitterLink(feed.subscriptions || [], selectedOption);
+
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-gray-200 p-4 shadow-md">
       <div>
-        <p className="text-3xl font-semibold capitalize">{feedName}</p>
+        <p className="text-3xl font-semibold capitalize">{feed.title}</p>
       </div>
       <div className="flex flex-row justify-between">
-        <a
-          href={subs && subs?.subs?.length > 0 ? url : ""}
-          aria-disabled={subs?.subs?.length === 0}
+        <Link
+          href={feed.subscriptions && feed.subscriptions.length > 0 ? url : ""}
+          aria-disabled={feed.subscriptions && feed.subscriptions.length === 0}
           onClick={(e) => {
-            if (subs?.subs?.length === 0) {
+            if (feed.subscriptions && feed.subscriptions.length === 0) {
               e.preventDefault();
             }
           }}
@@ -37,13 +33,13 @@ const FeedItem = ({ feedName }: Props) => {
           className="w-fit rounded-xl border bg-blue-400 p-2 font-semibold capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
         >
           visit
-        </a>
-        <a
-          href={`/feeds/${feedName}`}
+        </Link>
+        <Link
+          href={`/users/${user}/${feed.title}`}
           className="w-fit rounded-xl border border-blue-600 p-2 font-semibold capitalize text-gray-800 aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
         >
           edit
-        </a>
+        </Link>
       </div>
     </div>
   );

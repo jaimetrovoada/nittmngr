@@ -1,5 +1,10 @@
-export interface Feed {
-  name: string;
-  subs: string[];
-}
-export type Feeds = Feed[];
+export type UserResponse = {
+  error: string;
+} | null;
+
+export type UserFeedsResponse = {
+  id: string;
+  title: string;
+  subscriptions: string[];
+  userId: string;
+};

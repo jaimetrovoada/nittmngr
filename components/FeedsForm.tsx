@@ -1,34 +1,25 @@
 "use client";
-import { Feeds } from "@/@types";
 import React, { useState } from "react";
+import { createUserFeed } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  feeds: Feeds;
+  username: string;
 }
 
-const FeedsForm = ({ feeds }: Props) => {
+const FeedsForm = ({ username }: Props) => {
   const [input, setInput] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const feed = {
-      name: input,
-      subs: [],
-    };
 
-    const res = await fetch("/api/feeds/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        feeds: [...feeds, feed],
-      }),
-    });
-
-    console.log({ res });
-    if (res.ok) {
-      setInput("");
+    const [_, err] = await createUserFeed(username, input);
+    if (err) {
+      console.log({ err });
+      return;
+    } else {
+      router.refresh();
     }
   };
 

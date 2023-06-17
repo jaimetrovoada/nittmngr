@@ -2,16 +2,20 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { getClasses } from "@/lib/utils";
+import { addFeedSubscription } from "@/lib/api";
 
 interface Props {
   list: string[];
   setList: React.Dispatch<React.SetStateAction<string[]>>;
+  feedId: string;
 }
 
-const SubsForm = ({ setList, list }: Props) => {
+const SubsForm = ({ setList, list, feedId }: Props) => {
   const params = useParams();
   const [input, setInput] = useState("");
   const [isValid, setIsValid] = useState<boolean>(true);
+  const username = params.user;
+  const feed = params.feed;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,16 +38,12 @@ const SubsForm = ({ setList, list }: Props) => {
 
     console.log({ subs, isValid });
     if (isValid) {
-      const res = await fetch(`/api/feeds/${params.feed}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          subs: [...list, ...subs],
-        }),
+      const [_, err] = await addFeedSubscription(username, feed, {
+        feedId: feedId,
+        subs: subs,
       });
-      if (res.ok) {
+
+      if (!err) {
         setList((prev) => [...prev, ...subs]);
       }
     }

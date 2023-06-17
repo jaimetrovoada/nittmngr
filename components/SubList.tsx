@@ -5,14 +5,17 @@ import ListItem from "./ListItem";
 import SubsForm from "./SubsForm";
 import { useRouter } from "next/navigation";
 import { SelectContext } from "./Select/SelectProvider";
+import { removeFeedSubscription, deleteFeed } from "@/lib/api";
 
 interface Props {
-  subs: string[];
+  subs: string[] | undefined;
   feedName: string;
+  feedId: string;
+  username: string;
 }
 
-const SubList = ({ subs, feedName }: Props) => {
-  const [list, setList] = useState<string[]>(subs);
+const SubList = ({ subs, feedName, feedId, username }: Props) => {
+  const [list, setList] = useState<string[]>(subs || []);
   const [url, setUrl] = useState("");
   const router = useRouter();
   const { selectedOption } = useContext(SelectContext);
@@ -23,26 +26,20 @@ const SubList = ({ subs, feedName }: Props) => {
   }, [list, selectedOption]);
 
   const deleteItem = async (name: string) => {
-    const res = await fetch(`/api/feeds/${feedName}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        subs: list.filter((item) => item !== name),
-      }),
+    const newSubs = list.filter((item) => item !== name);
+    const [ok, err] = await removeFeedSubscription(username, feedName, {
+      feedId: feedId,
+      subs: newSubs,
     });
-    if (res.ok) {
+    if (ok) {
       setList((prev) => prev.filter((item) => item !== name));
     }
   };
 
-  const deleteFeed = async () => {
-    const res = await fetch(`/api/feeds/${feedName}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      router.push("/");
+  const removeFeed = async () => {
+    const [ok, err] = await deleteFeed(username, feedId);
+    if (ok) {
+      router.push(`/users/${username}`);
     }
   };
 
@@ -50,7 +47,7 @@ const SubList = ({ subs, feedName }: Props) => {
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
       <div className="flex flex-col gap-2">
         <p className="text-lg capitalize">add user</p>
-        <SubsForm list={list} setList={setList} />
+        <SubsForm list={list} setList={setList} feedId={feedId} />
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-lg">Users in this Feed</p>
@@ -76,7 +73,7 @@ const SubList = ({ subs, feedName }: Props) => {
           visit
         </a>
         <button
-          onClick={deleteFeed}
+          onClick={removeFeed}
           className="rounded-xl border border-red-400 p-2 text-sm capitalize"
         >
           delete feed
