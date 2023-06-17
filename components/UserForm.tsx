@@ -11,14 +11,22 @@ const UserForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const [_, error] = await createUser(input);
+    const [data, error] = await createUser(input);
     if (error) {
-      console.log({ error });
       setError(error.message || "something went wrong");
-    } else {
-      router.replace(`/users/${input}`);
+      return;
     }
+    if (data.status === 409) {
+      setError("Username already taken");
+      return;
+    }
+    if (data.ok) {
+      router.replace(`/users/${input}`);
+      return;
+    }
+    return;
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col">

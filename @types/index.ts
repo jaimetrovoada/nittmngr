@@ -1,6 +1,8 @@
-export type UserResponse = {
-  error: string;
-} | null;
+export interface PostResponse {
+  ok: boolean;
+  status: number;
+  error?: string;
+}
 
 export type UserFeedsResponse = {
   id: string;

@@ -1,4 +1,4 @@
-import { UserResponse, UserFeedsResponse } from "@/@types";
+import { PostResponse, UserFeedsResponse } from "@/@types";
 
 const url = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -15,13 +15,15 @@ export async function createUser(username: string) {
         username,
       }),
     });
-    const data: UserResponse = await res.json();
-    console.log({ res, data });
-    if (data && data.error) {
-      throw new Error(data.error);
-    }
 
-    return [data, null] as [UserResponse, null];
+    const body = await res.json();
+    const data: PostResponse = {
+      ok: res.ok,
+      status: res.status,
+      error: body ? body.error : undefined,
+    };
+
+    return [data, null] as [PostResponse, null];
   } catch (error) {
     console.log({ error });
     return [null, error] as [null, Error];
@@ -30,7 +32,7 @@ export async function createUser(username: string) {
 
 export async function createUserFeed(username: string, feed: string) {
   try {
-    await fetch(`${url}/api/users/${username}/feeds`, {
+    const res = await fetch(`${url}/api/users/${username}/feeds`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +41,15 @@ export async function createUserFeed(username: string, feed: string) {
         feed,
       }),
     });
-    return [null, null] as [null, null];
+
+    const body = await res.json();
+    const data: PostResponse = {
+      ok: res.ok,
+      status: res.status,
+      error: body ? body.error : undefined,
+    };
+
+    return [data, null] as [PostResponse, null];
   } catch (error) {
     console.log({ error });
     return [null, error] as [null, Error];
@@ -86,9 +96,15 @@ export async function addFeedSubscription(
       },
       body: JSON.stringify(payload),
     });
-    const data: UserFeedsResponse = await res.json();
-    console.log({ data });
-    return [data, null] as [UserFeedsResponse, null];
+
+    const body = await res.json();
+    const data: PostResponse = {
+      ok: res.ok,
+      status: res.status,
+      error: body ? body.error : undefined,
+    };
+
+    return [data, null] as [PostResponse, null];
   } catch (error) {
     console.log({ error });
     return [null, error] as [null, Error];
@@ -110,10 +126,17 @@ export async function removeFeedSubscription(
       },
       body: JSON.stringify(payload),
     });
-    return [res.ok, null] as [boolean, null];
+    const body = await res.json();
+    const data: PostResponse = {
+      ok: res.ok,
+      status: res.status,
+      error: body ? body.error : undefined,
+    };
+
+    return [data, null] as [PostResponse, null];
   } catch (error) {
     console.log({ error });
-    return [false, error] as [boolean, Error];
+    return [null, error] as [null, Error];
   }
 }
 
@@ -125,9 +148,17 @@ export async function deleteFeed(username: string, feedId: string) {
         "Content-Type": "application/json",
       },
     });
-    return [res.ok, null] as [boolean, null];
+
+    const body = await res.json();
+    const data: PostResponse = {
+      ok: res.ok,
+      status: res.status,
+      error: body ? body.error : undefined,
+    };
+
+    return [data, null] as [PostResponse, null];
   } catch (error) {
     console.log({ error });
-    return [false, error] as [boolean, Error];
+    return [null, error] as [null, Error];
   }
 }

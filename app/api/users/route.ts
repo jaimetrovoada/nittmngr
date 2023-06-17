@@ -10,17 +10,27 @@ export async function POST(request: Request) {
         username,
       },
     });
-    return NextResponse.json({
-      status: 200,
-    });
+    return NextResponse.json({ status: 201 });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        return NextResponse.json({
-          error: "Username already taken",
-        });
+        return NextResponse.json(
+          {
+            error: "Username already taken",
+          },
+          { status: 409 }
+        );
       }
+      return NextResponse.json(
+        {
+          error: error.message,
+        },
+        { status: 500 }
+      );
     }
-    return NextResponse.json({ error: "error" });
+    return NextResponse.json(
+      { error: "something went wrong" },
+      { status: 500 }
+    );
   }
 }

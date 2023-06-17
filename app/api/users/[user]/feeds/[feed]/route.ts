@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 interface Params {
   user: string;
@@ -9,55 +10,96 @@ interface Params {
 export async function GET(request: Request, context: { params: Params }) {
   const { feed: feedname, user: username } = context.params;
 
-  console.log({ feedname });
-  const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-    },
-    include: {
-      Feeds: true,
-    },
-  });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+      include: {
+        Feeds: true,
+      },
+    });
 
-  const feed = user?.Feeds.find((feed) => feed.title === feedname);
+    const feed = user?.Feeds.find((feed) => feed.title === feedname);
 
-  console.log({ feed });
+    return NextResponse.json(feed);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
-  return NextResponse.json(feed);
+    return NextResponse.json(
+      { error: "something went wrong" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
   const reqBody = await request.json();
   const subscriptions = reqBody.subs;
   const feedId = reqBody.feedId;
-  console.log({ reqBody });
 
-  const newSubscription = await prisma.feed.update({
-    where: {
-      id: feedId,
-    },
-    data: {
-      subscriptions: {
-        push: subscriptions,
+  try {
+    await prisma.feed.update({
+      where: {
+        id: feedId,
       },
-    },
-  });
+      data: {
+        subscriptions: {
+          push: subscriptions,
+        },
+      },
+    });
 
-  console.log({ newSubscription });
+    return NextResponse.json({ status: 201 });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
-  return NextResponse.json(newSubscription);
+    return NextResponse.json(
+      { error: "something went wrong" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(request: Request, context: { params: Params }) {
   const feedId = context.params.feed;
 
-  await prisma.feed.delete({
-    where: {
-      id: feedId,
-    },
-  });
+  try {
+    await prisma.feed.delete({
+      where: {
+        id: feedId,
+      },
+    });
+    return NextResponse.json(null);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
 
-  return NextResponse.json(null);
+    return NextResponse.json(
+      { error: "something went wrong" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(request: Request) {
@@ -65,15 +107,31 @@ export async function PUT(request: Request) {
   const feedId = reqBody.feedId;
   const subs = reqBody.subs;
 
-  await prisma.feed.update({
-    where: {
-      id: feedId,
-    },
-    data: {
-      subscriptions: {
-        set: subs,
+  try {
+    await prisma.feed.update({
+      where: {
+        id: feedId,
       },
-    },
-  });
-  return NextResponse.json(null);
+      data: {
+        subscriptions: {
+          set: subs,
+        },
+      },
+    });
+    return NextResponse.json(null);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "something went wrong" },
+      { status: 500 }
+    );
+  }
 }

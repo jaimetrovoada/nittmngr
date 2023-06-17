@@ -13,7 +13,7 @@ const Page = async ({ params }: Props) => {
   const [feeds, _] = await getUserFeeds(user);
   return (
     <>
-      <FeedsForm username={user} />
+      <FeedsForm username={user} feeds={feeds} />
       <FeedsList feeds={feeds} user={user} />
     </>
   );
