@@ -15,7 +15,7 @@ const FeedsList = ({ feeds, user }: Props) => {
     );
 
   return (
-    <div className=" grid grid-cols-1 gap-4 md:w-full md:grid-cols-2 lg:grid-cols-3">
+    <div className=" grid grid-cols-1 gap-4 md:w-full md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {feeds.map((feed, index) => {
         return <FeedItem key={index} feed={feed} user={user} />;
       })}

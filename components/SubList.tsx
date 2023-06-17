@@ -44,42 +44,39 @@ const SubList = ({ subs, feedName, feedId, username }: Props) => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <p className="text-lg capitalize">add user</p>
-        <SubsForm list={list} setList={setList} feedId={feedId} />
-      </div>
-      <div className="flex flex-col gap-2">
+    <section className="mx-auto flex w-full max-w-lg flex-col gap-4">
+      <SubsForm list={list} setList={setList} feedId={feedId} />
+      <div className="mx-auto flex w-full max-w-md flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
         <p className="text-lg">Users in this Feed</p>
         <ul>
           {list?.map((item, index) => (
             <ListItem key={index} name={item} deleteItem={deleteItem} />
           ))}
         </ul>
+        <div className="flex flex-row items-center justify-between">
+          <a
+            href={list.length > 0 ? url : ""}
+            aria-disabled={list.length === 0}
+            onClick={(e) => {
+              if (list.length === 0) {
+                e.preventDefault();
+              }
+            }}
+            target="_blank"
+            rel="noreferrer"
+            className="w-fit rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
+          >
+            visit
+          </a>
+          <button
+            onClick={removeFeed}
+            className="rounded-xl border border-red-400 p-2 text-sm capitalize text-red-600"
+          >
+            delete feed
+          </button>
+        </div>
       </div>
-      <div className="flex flex-row items-center justify-between">
-        <a
-          href={list.length > 0 ? url : ""}
-          aria-disabled={list.length === 0}
-          onClick={(e) => {
-            if (list.length === 0) {
-              e.preventDefault();
-            }
-          }}
-          target="_blank"
-          rel="noreferrer"
-          className="w-fit rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
-        >
-          visit
-        </a>
-        <button
-          onClick={removeFeed}
-          className="rounded-xl border border-red-400 p-2 text-sm capitalize"
-        >
-          delete feed
-        </button>
-      </div>
-    </div>
+    </section>
   );
 };
 

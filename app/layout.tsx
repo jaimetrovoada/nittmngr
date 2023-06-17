@@ -22,10 +22,10 @@ export default function RootLayout({
   ];
   return (
     <html lang="en">
-      <body className={inter.className + " flex flex-col"}>
+      <body className={inter.className + " flex h-dynamic flex-col bg-gray-50"}>
         <Providers>
-          <header>
-            <nav className="p-4 flex flex-row justify-between items-center">
+          <header className="container mx-auto p-4 lg:px-0">
+            <nav className="flex flex-row items-center justify-between">
               <Link href="/" className="text-3xl lg:text-6xl">
                 nittmngr
               </Link>

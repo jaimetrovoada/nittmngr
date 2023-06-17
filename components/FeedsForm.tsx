@@ -34,25 +34,27 @@ const FeedsForm = ({ username, feeds }: Props) => {
     }
   };
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
-
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex max-w-md flex-col gap-2 border border-gray-200 p-4 shadow-md"
+      className="mx-auto flex w-full max-w-md flex-col gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-md"
     >
-      <input
-        type="text"
-        onChange={handleInput}
-        value={input}
-        className="border border-gray-400 p-2"
-      />
+      <p className="text-xl font-semibold">New Feed</p>
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          name="name"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="rounded border border-gray-400 p-2"
+          placeholder="feed name"
+        />
+      </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
       <button
         type="submit"
-        className="rounded-xl border bg-blue-400 p-2 font-semibold capitalize text-white shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
+        className="rounded-xl bg-blue-500 p-2 text-sm capitalize text-white disabled:cursor-not-allowed disabled:bg-gray-400"
         disabled={!input}
       >
         create feed

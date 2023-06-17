@@ -30,13 +30,13 @@ const FeedItem = ({ feed, user }: Props) => {
           }}
           target="_blank"
           rel="noreferrer"
-          className="w-fit rounded-xl border bg-blue-400 p-2 font-semibold capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
+          className="rounded-xl border-2 border-blue-500 p-2 text-sm capitalize aria-disabled:cursor-not-allowed aria-disabled:border-gray-400 aria-disabled:text-gray-600"
         >
           visit
         </Link>
         <Link
           href={`/users/${user}/${feed.title}`}
-          className="w-fit rounded-xl border border-blue-600 p-2 font-semibold capitalize text-gray-800 aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
+          className="rounded-xl border-2 border-blue-500 p-2 text-sm capitalize text-blue-600"
         >
           edit
         </Link>
