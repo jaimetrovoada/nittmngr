@@ -9,4 +9,5 @@ export type UserFeedsResponse = {
   title: string;
   subscriptions: string[];
   userId: string;
+  isNsfw: boolean;
 };

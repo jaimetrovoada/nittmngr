@@ -11,11 +11,12 @@ interface Props {
 
 const FeedsForm = ({ username, feeds }: Props) => {
   const [input, setInput] = useState("");
+  const [isNsfw, setIsNsfw] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
   const feedsNames = feeds?.map((feed) => feed.title.toLowerCase());
-  console.log({ feedsNames });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -25,7 +26,10 @@ const FeedsForm = ({ username, feeds }: Props) => {
       return;
     }
 
-    const [_, err] = await createUserFeed(username, input);
+    const [_, err] = await createUserFeed(username, {
+      feed: input,
+      isNsfw: isNsfw,
+    });
     if (err) {
       console.log({ err });
       return;
@@ -52,6 +56,16 @@ const FeedsForm = ({ username, feeds }: Props) => {
         />
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
+      <div className="flex flex-row gap-2">
+        <label htmlFor="nsfw">Is NSFW</label>
+        <input
+          type="checkbox"
+          name="nsfw"
+          id="nsfw"
+          onChange={() => setIsNsfw((prev) => !prev)}
+          checked={isNsfw}
+        />
+      </div>
       <button
         type="submit"
         className="rounded-xl bg-blue-500 p-2 text-sm capitalize text-white disabled:cursor-not-allowed disabled:bg-gray-400"

@@ -30,16 +30,20 @@ export async function createUser(username: string) {
   }
 }
 
-export async function createUserFeed(username: string, feed: string) {
+export async function createUserFeed(
+  username: string,
+  payload: {
+    feed: string;
+    isNsfw: boolean;
+  }
+) {
   try {
     const res = await fetch(`${url}/api/users/${username}/feeds`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        feed,
-      }),
+      body: JSON.stringify(payload),
     });
 
     const body = await res.json();

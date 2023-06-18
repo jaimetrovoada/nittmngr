@@ -11,10 +11,12 @@ export async function POST(request: Request, context: { params: Params }) {
 
   try {
     const reqBody = await request.json();
+    console.log({ reqBody });
 
     await prisma.feed.create({
       data: {
         title: reqBody.feed,
+        isNsfw: reqBody.isNsfw,
         user: {
           connect: {
             username: username,
