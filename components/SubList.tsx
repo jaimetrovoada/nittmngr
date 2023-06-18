@@ -48,7 +48,7 @@ const SubList = ({ feed, username }: Props) => {
       <div className="flex flex-col gap-2 rounded-lg border border-gray-600/50 bg-neutral-950 p-4 shadow-sm">
         <div className="flex flex-row items-center justify-between">
           <p className="text-lg">Users in this Feed</p>
-          {feed.isNsfw && <p className="text-sm">(NSFW)</p>}
+          {feed.isNsfw && <p className="text-xs text-slate-300/50">(NSFW)</p>}
         </div>
         <ul className="">
           {list?.map((item, index) => (
