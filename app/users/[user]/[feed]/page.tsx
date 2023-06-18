@@ -13,12 +13,7 @@ const Page = async ({ params }: Props) => {
   const [feed, err] = await getFeed(params.user, params.feed);
   return (
     <Container className="flex flex-col gap-4">
-      <SubList
-        subs={feed?.subscriptions}
-        feedName={params.feed}
-        feedId={feed?.id as string}
-        username={params.user}
-      />
+      <SubList feed={feed} username={params.user} />
     </Container>
   );
 };

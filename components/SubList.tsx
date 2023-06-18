@@ -5,16 +5,15 @@ import ListItem from "./ListItem";
 import SubsForm from "./SubsForm";
 import { useRouter } from "next/navigation";
 import { removeFeedSubscription, deleteFeed } from "@/lib/api";
+import { UserFeedsResponse } from "@/@types";
 
 interface Props {
-  subs: string[] | undefined;
-  feedName: string;
-  feedId: string;
+  feed: UserFeedsResponse;
   username: string;
 }
 
-const SubList = ({ subs, feedName, feedId, username }: Props) => {
-  const [list, setList] = useState<string[]>(subs || []);
+const SubList = ({ feed, username }: Props) => {
+  const [list, setList] = useState<string[]>(feed.subscriptions || []);
   const [url, setUrl] = useState("");
   const router = useRouter();
 
@@ -25,8 +24,8 @@ const SubList = ({ subs, feedName, feedId, username }: Props) => {
 
   const deleteItem = async (name: string) => {
     const newSubs = list.filter((item) => item !== name);
-    const [ok, err] = await removeFeedSubscription(username, feedName, {
-      feedId: feedId,
+    const [ok, err] = await removeFeedSubscription(username, feed.title, {
+      feedId: feed.id,
       subs: newSubs,
     });
     if (ok) {
@@ -35,7 +34,7 @@ const SubList = ({ subs, feedName, feedId, username }: Props) => {
   };
 
   const removeFeed = async () => {
-    const [ok, err] = await deleteFeed(username, feedId);
+    const [ok, err] = await deleteFeed(username, feed.id);
     if (ok) {
       router.push(`/users/${username}`);
     }
@@ -43,9 +42,12 @@ const SubList = ({ subs, feedName, feedId, username }: Props) => {
 
   return (
     <section className="mx-auto flex w-full max-w-lg flex-col gap-4">
-      <SubsForm list={list} setList={setList} feedId={feedId} />
+      <SubsForm list={list} setList={setList} feedId={feed.id} />
       <div className="mx-auto flex w-full max-w-md flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
-        <p className="text-lg">Users in this Feed</p>
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-lg">Users in this Feed</p>
+          {feed.isNsfw && <p className="text-sm">(NSFW)</p>}
+        </div>
         <ul>
           {list?.map((item, index) => (
             <ListItem key={index} name={item} deleteItem={deleteItem} />
