@@ -16,9 +16,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className + " flex h-dynamic flex-col bg-gray-50"}>
-        <header className="container mx-auto p-4 lg:px-0">
-          <nav className="flex flex-row items-center justify-between">
+      <body
+        className={
+          inter.className +
+          " flex h-dynamic flex-col bg-zinc-900 text-slate-200"
+        }
+      >
+        <header className="border-b border-gray-700 bg-black">
+          <nav className="container mx-auto flex flex-row items-center justify-between p-4 lg:px-0">
             <Link href="/" className="text-3xl lg:text-6xl">
               nittmngr
             </Link>
