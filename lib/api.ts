@@ -64,7 +64,9 @@ export async function getUserFeeds(username: string) {
   try {
     const res = await fetch(`${url}/api/users/${username}`);
     const data: UserFeedsResponse[] = await res.json();
-    console.log({ data });
+    if (!res.ok) {
+      return [null, null] as [null, null];
+    }
     return [data, null] as [UserFeedsResponse[], null];
   } catch (error) {
     console.log({ error });
@@ -76,7 +78,10 @@ export async function getFeed(username: string, feed: string) {
   try {
     const res = await fetch(`${url}/api/users/${username}/feeds/${feed}`);
     const data: UserFeedsResponse = await res.json();
-    console.log({ data });
+    console.log({ data, res: res.ok });
+    if (!res.ok) {
+      return [null, null] as [null, null];
+    }
     return [data, null] as [UserFeedsResponse, null];
   } catch (error) {
     console.log({ error });
