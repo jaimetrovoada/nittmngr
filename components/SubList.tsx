@@ -6,6 +6,8 @@ import SubsForm from "./SubsForm";
 import { useRouter } from "next/navigation";
 import { removeFeedSubscription, deleteFeed } from "@/lib/api";
 import { UserFeedsResponse } from "@/@types";
+import Button from "./Button";
+import Link from "next/link";
 
 interface Props {
   feed: UserFeedsResponse;
@@ -18,9 +20,9 @@ const SubList = ({ feed, username }: Props) => {
   const router = useRouter();
 
   useEffect(() => {
-    const url = createNitterLink(list, false);
+    const url = createNitterLink(list, feed.isNsfw);
     setUrl(url);
-  }, [list]);
+  }, [list, feed.isNsfw]);
 
   const deleteItem = async (name: string) => {
     const newSubs = list.filter((item) => item !== name);
@@ -41,39 +43,40 @@ const SubList = ({ feed, username }: Props) => {
   };
 
   return (
-    <section className="mx-auto flex w-full max-w-lg flex-col gap-4">
+    <section className="mx-auto flex w-full max-w-lg flex-col gap-4 ">
       <SubsForm list={list} setList={setList} feedId={feed.id} />
-      <div className="mx-auto flex w-full max-w-md flex-col gap-2 rounded-lg border border-gray-100 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-2 rounded-lg border border-gray-600/50 bg-neutral-950 p-4 shadow-sm">
         <div className="flex flex-row items-center justify-between">
           <p className="text-lg">Users in this Feed</p>
           {feed.isNsfw && <p className="text-sm">(NSFW)</p>}
         </div>
-        <ul>
+        <ul className="">
           {list?.map((item, index) => (
             <ListItem key={index} name={item} deleteItem={deleteItem} />
           ))}
         </ul>
         <div className="flex flex-row items-center justify-between">
-          <a
+          <Button
+            as={Link}
             href={list.length > 0 ? url : ""}
             aria-disabled={list.length === 0}
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent) => {
               if (list.length === 0) {
                 e.preventDefault();
               }
             }}
             target="_blank"
             rel="noreferrer"
-            className="w-fit rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md aria-disabled:cursor-not-allowed aria-disabled:bg-gray-400"
           >
             visit
-          </a>
-          <button
+          </Button>
+          <Button
             onClick={removeFeed}
-            className="rounded-xl border border-red-400 p-2 text-sm capitalize text-red-600"
+            variant="secondary"
+            className="border-red-500 text-red-500"
           >
             delete feed
-          </button>
+          </Button>
         </div>
       </div>
     </section>
