@@ -3,6 +3,8 @@ import { createUser } from "@/lib/api";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Form from "./Form";
+import Button from "./Button";
 
 const UserForm = () => {
   const [input, setInput] = useState("");
@@ -29,10 +31,7 @@ const UserForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-md flex-col gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-md"
-    >
+    <Form onSubmit={handleSubmit}>
       <p className="text-xl font-semibold">Login/Register</p>
       <div className="flex flex-col gap-2">
         <label htmlFor="username">Username</label>
@@ -41,7 +40,7 @@ const UserForm = () => {
           name="username"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="rounded border border-gray-400 p-2"
+          className="rounded border border-gray-400 bg-zinc-900/50 p-2"
           placeholder="username"
         />
       </div>
@@ -49,27 +48,24 @@ const UserForm = () => {
         <p className="text-xs text-red-400">{error}</p>
       ) : null}
       <div className="flex flex-row items-center justify-between">
-        <button
-          type="submit"
-          className="rounded-xl bg-blue-500 p-2 text-sm capitalize text-white disabled:cursor-not-allowed disabled:bg-gray-400"
-          disabled={!input}
-        >
+        <Button type="submit" disabled={!input}>
           Register
-        </button>
-        <Link
+        </Button>
+        <Button
+          as={Link}
           href={input && `/users/${input}`}
           aria-disabled={!input}
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent) => {
             if (!input) {
               e.preventDefault();
             }
           }}
-          className="rounded-xl border-2 border-blue-500 p-2 text-sm capitalize aria-disabled:cursor-not-allowed aria-disabled:border-gray-400 aria-disabled:text-gray-600"
+          variant="secondary"
         >
           View User
-        </Link>
+        </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 
