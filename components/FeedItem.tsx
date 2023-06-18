@@ -2,6 +2,7 @@
 import { createNitterLink } from "@/lib";
 import { UserFeedsResponse } from "@/@types";
 import Link from "next/link";
+import Button from "./Button";
 
 interface Props {
   feed: UserFeedsResponse;
@@ -12,31 +13,32 @@ const FeedItem = ({ feed, user }: Props) => {
   const url = createNitterLink(feed.subscriptions || [], feed.isNsfw);
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-gray-200 p-4 shadow-md">
+    <div className="flex flex-col gap-2 rounded-xl border border-gray-600/50 bg-neutral-950 p-4 shadow-sm">
       <div>
         <p className="text-3xl font-semibold capitalize">{feed.title}</p>
       </div>
       <div className="flex flex-row justify-between">
-        <Link
+        <Button
+          as={Link}
           href={feed.subscriptions && feed.subscriptions.length > 0 ? url : ""}
           aria-disabled={feed.subscriptions && feed.subscriptions.length === 0}
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent) => {
             if (feed.subscriptions && feed.subscriptions.length === 0) {
               e.preventDefault();
             }
           }}
           target="_blank"
           rel="noreferrer"
-          className="rounded-xl border-2 border-blue-500 p-2 text-sm capitalize aria-disabled:cursor-not-allowed aria-disabled:border-gray-400 aria-disabled:text-gray-600"
         >
           visit
-        </Link>
-        <Link
+        </Button>
+        <Button
+          as={Link}
           href={`/users/${user}/${feed.title}`}
-          className="rounded-xl border-2 border-blue-500 p-2 text-sm capitalize text-blue-600"
+          variant="secondary"
         >
           edit
-        </Link>
+        </Button>
       </div>
     </div>
   );
