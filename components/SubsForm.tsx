@@ -24,11 +24,11 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
     setInput("");
 
     let subs: string[] = [];
-    if (input.includes(",")) {
-      const trim = input.trim();
-      subs = trim.split(",").map((item) => item.trim());
+    const inputTrim = input.trim();
+    if (inputTrim.includes(",")) {
+      subs = inputTrim.split(",").map((item) => item.trim());
     } else {
-      subs = [input];
+      subs = [inputTrim];
     }
 
     for (let i = 0; i < subs.length; i++) {
