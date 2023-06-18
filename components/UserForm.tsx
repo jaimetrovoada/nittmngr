@@ -40,7 +40,7 @@ const UserForm = () => {
           name="username"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="rounded border border-gray-400 bg-zinc-900/50 p-2"
+          className="rounded border border-gray-400 bg-zinc-900 p-2 placeholder:capitalize"
           placeholder="username"
         />
       </div>

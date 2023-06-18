@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { getClasses } from "@/lib/utils";
 import { addFeedSubscription } from "@/lib/api";
+import Form from "./Form";
+import Button from "./Button";
 
 interface Props {
   list: string[];
@@ -60,10 +62,7 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-md flex-col gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-md"
-    >
+    <Form onSubmit={handleSubmit}>
       <p className="text-xl font-semibold">Add Users</p>
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name</label>
@@ -71,23 +70,22 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
           type="text"
           onChange={handleInput}
           value={input}
-          className={getClasses("rounded border border-gray-400 p-2", {
-            "border-red-600": input && isValid === false,
-          })}
+          className={getClasses(
+            "rounded border border-gray-400 bg-zinc-900 p-2 placeholder:capitalize",
+            {
+              "border-red-600": input && isValid === false,
+            }
+          )}
           placeholder="username"
         />
         {input && isValid === false && (
           <p className="text-red-600">invalid username</p>
         )}
       </div>
-      <button
-        type="submit"
-        className="rounded-xl border bg-blue-400 p-2 text-sm capitalize text-white shadow-md disabled:cursor-not-allowed disabled:bg-gray-400"
-        disabled={!input}
-      >
+      <Button type="submit" disabled={!input}>
         add
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 
