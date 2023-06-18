@@ -10,16 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum IsNsfw {
+  YES
+  NO
+}
+
 model Feed {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   title         String
   subscriptions String[]
   user          User     @relation(fields: [userId], references: [id])
-  userId        String      @unique
+  userId        String   @unique
+  isNsfw        IsNsfw   @default(NO)
 }
 
 model User {
-  id       String    @id @default(uuid())
+  id       String @id @default(uuid())
   username String @unique
-  Feeds     Feed[]
+  Feeds    Feed[]
 }
