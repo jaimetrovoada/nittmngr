@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+import { getClasses } from "@/lib/utils";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 const Container = ({ children, className, ...props }: Props) => {
   return (
     <main
-      className={twMerge("container mx-auto flex-1 p-4 lg:px-0", className)}
+      className={getClasses("container mx-auto flex-1 p-4 lg:px-0", className)}
       {...props}
     >
       {children}
