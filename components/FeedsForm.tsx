@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { createUserFeed } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { UserFeedsResponse } from "@/@types";
+import Form from "./Form";
+import Button from "./Button";
 
 interface Props {
   username: string;
@@ -39,10 +41,7 @@ const FeedsForm = ({ username, feeds }: Props) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-md flex-col gap-3 rounded-lg border border-gray-100 bg-white p-4 shadow-md"
-    >
+    <Form onSubmit={handleSubmit}>
       <p className="text-xl font-semibold">New Feed</p>
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name</label>
@@ -51,7 +50,7 @@ const FeedsForm = ({ username, feeds }: Props) => {
           name="name"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="rounded border border-gray-400 p-2"
+          className="rounded border border-gray-400 bg-zinc-900 p-2 placeholder:capitalize"
           placeholder="feed name"
         />
       </div>
@@ -66,14 +65,10 @@ const FeedsForm = ({ username, feeds }: Props) => {
           checked={isNsfw}
         />
       </div>
-      <button
-        type="submit"
-        className="rounded-xl bg-blue-500 p-2 text-sm capitalize text-white disabled:cursor-not-allowed disabled:bg-gray-400"
-        disabled={!input}
-      >
+      <Button type="submit" disabled={!input}>
         create feed
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 
