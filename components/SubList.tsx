@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { createNitterLink } from "../lib";
 import ListItem from "./ListItem";
 import SubsForm from "./SubsForm";
 import { useRouter } from "next/navigation";
-import { SelectContext } from "./Select/SelectProvider";
 import { removeFeedSubscription, deleteFeed } from "@/lib/api";
 
 interface Props {
@@ -18,12 +17,11 @@ const SubList = ({ subs, feedName, feedId, username }: Props) => {
   const [list, setList] = useState<string[]>(subs || []);
   const [url, setUrl] = useState("");
   const router = useRouter();
-  const { selectedOption } = useContext(SelectContext);
 
   useEffect(() => {
-    const url = createNitterLink(list, selectedOption);
+    const url = createNitterLink(list, false);
     setUrl(url);
-  }, [list, selectedOption]);
+  }, [list]);
 
   const deleteItem = async (name: string) => {
     const newSubs = list.filter((item) => item !== name);

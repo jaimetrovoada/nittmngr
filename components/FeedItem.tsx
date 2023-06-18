@@ -1,7 +1,5 @@
 "use client";
 import { createNitterLink } from "@/lib";
-import { useContext } from "react";
-import { SelectContext } from "./Select/SelectProvider";
 import { UserFeedsResponse } from "@/@types";
 import Link from "next/link";
 
@@ -11,8 +9,7 @@ interface Props {
 }
 
 const FeedItem = ({ feed, user }: Props) => {
-  const { selectedOption } = useContext(SelectContext);
-  const url = createNitterLink(feed.subscriptions || [], selectedOption);
+  const url = createNitterLink(feed.subscriptions || [], feed.isNsfw);
 
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-gray-200 p-4 shadow-md">
