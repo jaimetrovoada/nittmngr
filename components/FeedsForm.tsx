@@ -65,6 +65,10 @@ const FeedsForm = ({ username, feeds }: Props) => {
           checked={isNsfw}
         />
       </div>
+      <span className="rounded-full bg-neutral-900/50 p-2 text-xs text-slate-300/60">
+        NSFW feeds are set to open in a different Nitter instance that supports
+        displaying NSFW accounts
+      </span>
       <Button type="submit" disabled={!input}>
         create feed
       </Button>
