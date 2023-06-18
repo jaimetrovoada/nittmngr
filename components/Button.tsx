@@ -26,12 +26,16 @@ const Button = <C extends React.ElementType = "button">({
   return (
     <Component
       {...props}
-      className={getClasses("rounded-xl p-2 text-sm capitalize", {
-        "bg-blue-500 text-white disabled:cursor-not-allowed disabled:bg-gray-700 aria-disabled:cursor-not-allowed aria-disabled:border-gray-400":
-          variant === "primary",
-        "border-2 border-blue-500 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-slate-400 aria-disabled:cursor-not-allowed aria-disabled:border-gray-200 aria-disabled:text-slate-400":
-          variant === "secondary",
-      })}
+      className={getClasses(
+        "rounded-xl p-2 text-sm capitalize",
+        {
+          "border-2 border-blue-500 bg-blue-500 text-white disabled:cursor-not-allowed disabled:border-gray-700 disabled:bg-gray-700 aria-disabled:cursor-not-allowed aria-disabled:border-gray-700":
+            variant === "primary",
+          "border-2 border-blue-500 disabled:cursor-not-allowed disabled:border-gray-400 disabled:text-slate-300 aria-disabled:cursor-not-allowed aria-disabled:border-gray-400 aria-disabled:text-slate-300":
+            variant === "secondary",
+        },
+        props.className
+      )}
     >
       {children}
     </Component>
