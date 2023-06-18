@@ -6,7 +6,7 @@ const Form = ({ ...props }: Props) => {
     <form
       {...props}
       className={getClasses(
-        "mx-auto flex w-full flex-col gap-6 rounded-lg border border-gray-600/50 bg-zinc-950 p-4 shadow-md",
+        "mx-auto flex w-full max-w-screen-sm flex-col gap-6 rounded-lg border border-gray-600/50 bg-zinc-950 p-4 shadow-md",
         props.className
       )}
     >
