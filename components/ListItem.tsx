@@ -5,9 +5,9 @@ interface Props {
 
 const ListItem = ({ name, deleteItem }: Props) => {
   return (
-    <li className="p-2 border-b border-b-gray-100 hover:bg-gray-50 flex flex-row justify-between items-center text-sm lg:text-base">
+    <li className="flex flex-row items-center justify-between border-b border-b-gray-800 p-2 text-sm hover:bg-zinc-900/20 lg:text-base">
       {name}
-      <button onClick={() => deleteItem(name)} className="text-red-600 p-2">
+      <button onClick={() => deleteItem(name)} className="p-2 text-red-600">
         X
       </button>
     </li>
