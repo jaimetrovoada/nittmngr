@@ -1,8 +1,9 @@
 import { PostResponse, UserFeedsResponse } from "@/@types";
 
-const url = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const url =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+    ? process.env.NEXT_PUBLIC_APP_URL
+    : "http://localhost:3000";
 
 export async function createUser(username: string) {
   try {
