@@ -1,6 +1,7 @@
 import Link from "next/link";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Avatar from "@/components/Avatar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
             <Link href="/" className="text-3xl lg:text-6xl">
               nittmngr
             </Link>
+            <Avatar />
           </nav>
         </header>
         {children}
