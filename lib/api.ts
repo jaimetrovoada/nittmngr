@@ -63,7 +63,9 @@ export async function createUserFeed(
 
 export async function getUserFeeds(username: string) {
   try {
-    const res = await fetch(`${url}/api/users/${username}`);
+    const res = await fetch(`${url}/api/users/${username}`, {
+      next: { revalidate: 10 },
+    });
     const data: UserFeedsResponse[] = await res.json();
     if (!res.ok) {
       return [null, null] as [null, null];
@@ -77,7 +79,9 @@ export async function getUserFeeds(username: string) {
 
 export async function getFeed(username: string, feed: string) {
   try {
-    const res = await fetch(`${url}/api/users/${username}/feeds/${feed}`);
+    const res = await fetch(`${url}/api/users/${username}/feeds/${feed}`, {
+      next: { revalidate: 10 },
+    });
     const data: UserFeedsResponse = await res.json();
     console.log({ data, res: res.ok });
     if (!res.ok) {
