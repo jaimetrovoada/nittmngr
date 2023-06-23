@@ -15,8 +15,8 @@ model Feed {
   title         String
   subscriptions String[]
   user          User     @relation(fields: [userId], references: [id])
-  userId        String   @unique
-  isNsfw        Boolean   @default(false)
+  userId        String
+  isNsfw        Boolean  @default(false)
 }
 
 model User {
