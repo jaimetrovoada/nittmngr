@@ -13,13 +13,15 @@ export async function POST(request: Request, context: { params: Params }) {
     const reqBody = await request.json();
     console.log({ reqBody });
 
-    await prisma.feed.create({
+    await prisma.user.update({
+      where: {
+        username: username,
+      },
       data: {
-        title: reqBody.feed,
-        isNsfw: reqBody.isNsfw,
-        user: {
-          connect: {
-            username: username,
+        Feeds: {
+          create: {
+            title: reqBody.feed,
+            isNsfw: reqBody.isNsfw,
           },
         },
       },
