@@ -16,12 +16,16 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
   const params = useParams();
   const [input, setInput] = useState("");
   const [isValid, setIsValid] = useState<boolean>(true);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const username = params.user;
   const feed = params.feed;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInput("");
+    setIsLoading(true);
 
     let subs: string[] = [];
     const inputTrim = input.trim();
@@ -40,10 +44,14 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
 
     console.log({ subs, isValid });
     if (isValid) {
-      const [_, err] = await addFeedSubscription(username, feed, {
+      const [res, err] = await addFeedSubscription(username, feed, {
         feedId: feedId,
         subs: subs,
       });
+
+      if (res || err) {
+        setIsLoading(false);
+      }
 
       if (!err) {
         setList((prev) => [...prev, ...subs]);
@@ -82,8 +90,8 @@ const SubsForm = ({ setList, list, feedId }: Props) => {
           <p className="text-red-600">invalid username</p>
         )}
       </div>
-      <Button type="submit" disabled={!input}>
-        add
+      <Button type="submit" disabled={!input || isLoading}>
+        {isLoading ? "Waiting..." : "add"}
       </Button>
     </Form>
   );

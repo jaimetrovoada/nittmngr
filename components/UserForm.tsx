@@ -9,12 +9,19 @@ import Button from "./Button";
 const UserForm = () => {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     const [data, error] = await createUser(input);
+
+    if (data || error) {
+      setIsLoading(false);
+    }
+
     if (error) {
       setError(error.message || "something went wrong");
       return;
@@ -48,15 +55,15 @@ const UserForm = () => {
         <p className="text-xs text-red-400">{error}</p>
       ) : null}
       <div className="flex flex-row items-center justify-between">
-        <Button type="submit" disabled={!input}>
-          Register
+        <Button type="submit" disabled={!input || isLoading}>
+          {isLoading ? "Waiting..." : "Register"}
         </Button>
         <Button
           as={Link}
           href={input && `/users/${input}`}
-          aria-disabled={!input}
+          aria-disabled={!input || isLoading}
           onClick={(e: React.MouseEvent) => {
-            if (!input) {
+            if (!input || isLoading) {
               e.preventDefault();
             }
           }}

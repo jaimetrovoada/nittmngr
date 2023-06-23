@@ -17,10 +17,13 @@ const FeedsForm = ({ username, feeds }: Props) => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const feedsNames = feeds?.map((feed) => feed.title.toLowerCase());
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (feedsNames?.includes(input.toLowerCase())) {
       console.log("feed already exists");
@@ -28,10 +31,15 @@ const FeedsForm = ({ username, feeds }: Props) => {
       return;
     }
 
-    const [_, err] = await createUserFeed(username, {
+    const [res, err] = await createUserFeed(username, {
       feed: input,
       isNsfw: isNsfw,
     });
+
+    if (res || error) {
+      setIsLoading(false);
+    }
+
     if (err) {
       console.log({ err });
       return;
@@ -69,8 +77,8 @@ const FeedsForm = ({ username, feeds }: Props) => {
         NSFW feeds are set to open in a different Nitter instance that supports
         displaying NSFW accounts
       </span>
-      <Button type="submit" disabled={!input}>
-        create feed
+      <Button type="submit" disabled={!input || isLoading}>
+        {isLoading ? "Waiting..." : "create feed"}
       </Button>
     </Form>
   );
