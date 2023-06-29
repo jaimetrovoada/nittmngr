@@ -64,7 +64,8 @@ export async function createUserFeed(
 export async function getUserFeeds(username: string) {
   try {
     const res = await fetch(`${url}/api/users/${username}`, {
-      next: { revalidate: 10 },
+      next: { revalidate: 0 },
+      cache: "no-cache",
     });
     const data: UserFeedsResponse[] = await res.json();
     if (!res.ok) {
@@ -80,7 +81,8 @@ export async function getUserFeeds(username: string) {
 export async function getFeed(username: string, feed: string) {
   try {
     const res = await fetch(`${url}/api/users/${username}/feeds/${feed}`, {
-      next: { revalidate: 10 },
+      next: { revalidate: 0 },
+      cache: "no-cache",
     });
     const data: UserFeedsResponse = await res.json();
     console.log({ data, res: res.ok });
