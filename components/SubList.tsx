@@ -47,12 +47,22 @@ const SubList = ({ feed, username }: Props) => {
       <SubsForm list={list} setList={setList} feedId={feed.id} />
       <div className="mx-auto flex w-full max-w-screen-sm flex-col gap-2 rounded-lg border border-gray-600/50 bg-neutral-950 p-4 shadow-sm">
         <div className="flex flex-row items-center justify-between">
-          <p className="text-lg font-semibold">Users in this Feed</p>
+          <p className="text-lg font-semibold">
+            Users in this Feed{" "}
+            <span className="text-xs font-normal text-slate-300/50">
+              ({list.length} users)
+            </span>
+          </p>
           {feed.isNsfw && <p className="text-xs text-slate-300/50">(NSFW)</p>}
         </div>
         <ul className="">
           {list?.map((item, index) => (
-            <ListItem key={index} name={item} deleteItem={deleteItem} />
+            <ListItem
+              key={index}
+              name={item}
+              deleteItem={deleteItem}
+              url={createNitterLink([item], feed.isNsfw)}
+            />
           ))}
         </ul>
         <div className="flex flex-row items-center justify-between">
